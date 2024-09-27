@@ -1,6 +1,7 @@
 package co.edu.uniquindio.notas.modelo;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -24,12 +25,12 @@ public class NotaPrincipal {
      * @param recordatorio Fecha de recordatorio de la nota
      * @throws Exception Si alguno de los campos está vacío o la fecha de recordatorio es menor a la fecha actual
      */
-    public void agregarNota(String titulo, String descripcion, String categoria, LocalDateTime recordatorio) throws Exception {
+    public void agregarNota(String titulo, String descripcion, String categoria, LocalDate recordatorio) throws Exception {
 
         if(titulo.isEmpty() || descripcion.isEmpty() || categoria.isEmpty())
             throw new Exception("Todos los campos son obligatorios");
 
-        if(recordatorio.isBefore(LocalDateTime.now()))
+        if(recordatorio.isBefore(LocalDate.now()))
             throw new Exception("La fecha de recordatorio no puede ser menor a la fecha actual");
 
         Nota nota = Nota.builder()
@@ -37,7 +38,7 @@ public class NotaPrincipal {
                 .titulo(titulo)
                 .descripcion(descripcion)
                 .categoria(categoria)
-                .recordatorio(recordatorio)
+                .recordatorio(recordatorio.atStartOfDay()) //Convierte la fecha a LocalDateTime
                 .fechaCreacion(LocalDateTime.now()).build();
 
         notas.add(nota);
@@ -66,7 +67,14 @@ public class NotaPrincipal {
      * @param categoria Categoría de la nota
      * @throws Exception Si no existe la nota con el id proporcionado
      */
-    public void actualizarNota(String id, String titulo, String descripcion, String categoria) throws Exception{
+    public void actualizarNota(String id, String titulo, String descripcion, String categoria, LocalDate recordatorio) throws Exception{
+
+        if(titulo.isEmpty() || descripcion.isEmpty() || categoria.isEmpty())
+            throw new Exception("Todos los campos son obligatorios");
+
+        if(recordatorio.isBefore(LocalDate.now()))
+            throw new Exception("La fecha de recordatorio no puede ser menor a la fecha actual");
+
         int posNota = obtenerNota(id);
 
         if(posNota == -1){
@@ -77,7 +85,9 @@ public class NotaPrincipal {
         notaGuardada.setTitulo(titulo);
         notaGuardada.setCategoria(categoria);
         notaGuardada.setDescripcion(descripcion);
+        notaGuardada.setRecordatorio(recordatorio.atStartOfDay()); //Convierte la fecha a LocalDateTime
 
+        //Actualiza la nota en la lista de notas
         notas.set(posNota, notaGuardada);
     }
 
@@ -86,7 +96,7 @@ public class NotaPrincipal {
      * @param id Id de la nota a buscar
      * @return Posición de la nota en la lista
      */
-    public int obtenerNota(String id){
+    private int obtenerNota(String id){
 
         for (int i = 0; i < notas.size(); i++) {
             if( notas.get(i).getId().equals(id) ){

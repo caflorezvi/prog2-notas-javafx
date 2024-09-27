@@ -90,7 +90,7 @@ public class InicioControlador implements Initializable {
                     txtTitulo.getText(),
                     txtNota.getText(),
                     txtCategoria.getValue(),
-                    txtRecordatorio.getValue().atStartOfDay() //Convertir LocalDate a LocalDateTime
+                    txtRecordatorio.getValue()
             );
 
             limpiarCampos();
@@ -128,7 +128,8 @@ public class InicioControlador implements Initializable {
                         notaSeleccionada.getId(),
                         txtTitulo.getText(),
                         txtNota.getText(),
-                        txtCategoria.getValue()
+                        txtCategoria.getValue(),
+                        txtRecordatorio.getValue()
                 );
 
                 limpiarCampos();

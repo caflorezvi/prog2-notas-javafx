@@ -11,13 +11,13 @@ public class NotasApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(NotasApp.class.getResource("/inicio.fxml"));
+        FXMLLoader loader = new FXMLLoader(NotasApp.class.getResource("/inicio2.fxml"));
         Parent parent = loader.load();
 
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(parent, 1000, 360);
         stage.setScene(scene);
         stage.setTitle("UQ Notas");
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.show();
 
     }
