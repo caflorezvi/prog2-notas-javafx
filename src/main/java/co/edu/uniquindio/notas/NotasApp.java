@@ -1,4 +1,4 @@
-package co.edu.uniquindio.notas.app;
+package co.edu.uniquindio.notas;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

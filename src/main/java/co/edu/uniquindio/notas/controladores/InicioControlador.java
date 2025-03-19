@@ -1,7 +1,7 @@
 package co.edu.uniquindio.notas.controladores;
 
 import co.edu.uniquindio.notas.modelo.Nota;
-import co.edu.uniquindio.notas.modelo.NotaPrincipal;
+import co.edu.uniquindio.notas.modelo.GestionNotas;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,14 +43,14 @@ public class InicioControlador implements Initializable {
     @FXML
     private TableColumn<Nota, String> colRecordatorio;
 
-    private final NotaPrincipal notaPrincipal; //Instancia de la clase NotaPrincipal
+    private final GestionNotas gestionNotas; //Instancia de la clase GestionNotas
 
     private Nota notaSeleccionada; //Nota seleccionada de la tabla
 
     private ObservableList<Nota> notasObservable; //Lista observable de notas
 
     public InicioControlador() {
-        notaPrincipal = new NotaPrincipal();
+        gestionNotas = new GestionNotas();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class InicioControlador implements Initializable {
         colRecordatorio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().obtenerDiferencia()));
 
         //Cargar categorias en el ComboBox
-        txtCategoria.setItems( FXCollections.observableList(notaPrincipal.listarCategorias()) );
+        txtCategoria.setItems( FXCollections.observableList(gestionNotas.listarCategorias()) );
 
         //Inicializar lista observable y cargar las notas
         notasObservable = FXCollections.observableArrayList();
@@ -86,7 +86,7 @@ public class InicioControlador implements Initializable {
 
     public void crearNota(ActionEvent e){
         try {
-            notaPrincipal.agregarNota(
+            gestionNotas.agregarNota(
                     txtTitulo.getText(),
                     txtNota.getText(),
                     txtCategoria.getValue(),
@@ -106,7 +106,7 @@ public class InicioControlador implements Initializable {
 
         if(notaSeleccionada != null) {
             try {
-                notaPrincipal.eliminarNota(notaSeleccionada.getId());
+                gestionNotas.eliminarNota(notaSeleccionada.getId());
 
                 limpiarCampos();
                 actualizarNotas();
@@ -124,7 +124,7 @@ public class InicioControlador implements Initializable {
 
         if(notaSeleccionada != null) {
             try {
-                notaPrincipal.actualizarNota(
+                gestionNotas.actualizarNota(
                         notaSeleccionada.getId(),
                         txtTitulo.getText(),
                         txtNota.getText(),
@@ -147,7 +147,7 @@ public class InicioControlador implements Initializable {
      * Agrega las notas a la lista observable y las muestra en la tabla
      */
     private void cargarNotas() {
-        notasObservable.setAll(notaPrincipal.listarNotas());
+        notasObservable.setAll(gestionNotas.listarNotas());
         tablaNotas.setItems(notasObservable);
     }
 
@@ -155,7 +155,7 @@ public class InicioControlador implements Initializable {
      * Actualiza la lista observable de notas
      */
     public void actualizarNotas() {
-        notasObservable.setAll(notaPrincipal.listarNotas());
+        notasObservable.setAll(gestionNotas.listarNotas());
     }
 
     /**
